@@ -13,5 +13,17 @@
 
 
 #define macro MAIN() = takes(0) returns(0) {
+        // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(add1) eq add1 jumpi  // Jump to the add1 function if the function signature matches
 
+    0x00 0x00 revert  // Revert if the function signature does not match
+
+    add1:
+        0x04 calldataload  // Load the first argument
+        0x01               // 1 in hex
+        add                // Add the two values
+        0x00 mstore        // Store the result
+
+        0x20 0x00 return   // Return the result
 }
