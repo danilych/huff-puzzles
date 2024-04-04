@@ -9,5 +9,9 @@
 */
 
 #define macro MAIN() = takes(0) returns(0) {
-    
+    callvalue           // get msg.value
+    0x00      
+    mstore              // store msg.value at 0x00
+      
+    0x20 0x00 return    // return msg.value from 0x00
 }
