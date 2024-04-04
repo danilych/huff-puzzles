@@ -8,5 +8,10 @@
  */
 
 #define macro MAIN() = takes(0) returns(0) {
-   
+   caller           // get the address of the sender
+   balance          // get the balance of the sender
+   0x00
+   mstore           // store the balance in memory
+
+   0x20 0x00 return // return the balance
 }
