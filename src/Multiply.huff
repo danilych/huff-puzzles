@@ -13,5 +13,30 @@
 
 
 #define macro MAIN() = takes(0) returns(0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(multiply) eq multiply jumpi  // Jump to the add1 function if the function signature matches
 
+    0x00 0x00 revert  // Revert if the function signature does not match
+
+    multiply:
+        0x04 calldataload       // [arg1]
+        dup1                    // [arg1, arg1]
+        iszero continue jumpi   // [arg1]
+        0x24 calldataload       // [arg2, arg1]
+        dup1                    // [arg2, arg2, arg1]
+        iszero continue jumpi   // [arg2, arg1]
+        dup2                    // [arg1, arg2, arg1]
+        dup2                    // [arg2, arg1, arg2, arg1]
+        mul                     // [mul_result, arg2, arg1]
+        swap2                   // [arg1, arg2, mul_result]
+        dup3                    // [mul_result, arg1, arg2, mul_result]
+        div                     // if resul / arg1 != arg2 than overflow
+        eq continue jumpi
+
+        0x00 0x00 revert  // Revert if overflow
+
+        continue:
+            0x00 mstore  // Store the result from stack to memory
+            0x20 0x00 return   // Return the result
 }
