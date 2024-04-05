@@ -9,5 +9,11 @@
  */
 
 #define macro MAIN() = takes(0) returns(0) {
+    callvalue               // get the amount of ether sent with the transaction
+    iszero continue jumpi   // if the amount of ether sent is 0, continue execution
 
+    0x00 0x00 revert
+
+    continue:
+        0x00 0x00 return
 }
